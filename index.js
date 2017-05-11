@@ -8,7 +8,7 @@ app.listen(port, () => {
 
 app.get('/api/whoami', (req, res) => {
     res.status(200).send({
-        'ipaddress': req.ip,
+        'ipaddress': req.ip.slice(7, req.ip.length),
         'language': req.acceptsLanguages()[0],
         'software': req.get('User-Agent')
             .split('(')[1]
