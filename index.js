@@ -14,6 +14,7 @@ const db = mongoose.connection
 db.on('error', error => console.log(`MongoDB connection error: ${error}`))
 db.once('open', () => {
     console.log(`connected to MongoDB at ${mongoUrl}`)
+
     api(app, db)
 
     app.listen(port, () => {
