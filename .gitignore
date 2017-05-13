@@ -60,3 +60,6 @@ typings/
 # Editor-specific
 .vscode
 .vs
+
+# MongoDB data
+.data

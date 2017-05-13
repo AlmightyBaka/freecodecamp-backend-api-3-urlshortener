@@ -1,17 +1,22 @@
-const app = require('express')()
+const express = require('express'),
+      mongoose = require('mongoose')
 
-const port = process.env.PORT || 8000;
+const api = require('./api/url-shortener.js')
 
-app.listen(port, () => {
-    console.log(`running on http://localhost:${port}`)
-})
+const app = express(),
+      mongoUrl = 'mongodb://localhost:27017/',
+      port = process.env.PORT || 8000
 
-app.get('/api/whoami', (req, res) => {
-    res.status(200).send({
-        'ipaddress': req.ip.slice(7, req.ip.length),
-        'language': req.acceptsLanguages()[0],
-        'software': req.get('User-Agent')
-            .split('(')[1]
-            .split(')')[0]
+
+mongoose.connect(mongoUrl)
+const db = mongoose.connection
+
+db.on('error', error => console.log(`MongoDB connection error: ${error}`))
+db.once('open', () => {
+    console.log(`connected to MongoDB at ${mongoUrl}`)
+    api(app, db)
+
+    app.listen(port, () => {
+        console.log(`running on http://localhost:${port}`)
     })
 })
